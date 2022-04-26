@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import {TaskType, Todolist} from "./Todolist";
+import {Todolist} from "./Todolist";
 import {v1} from 'uuid';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
@@ -66,10 +66,10 @@ function App() {
                 let tasksForRender = tasks[el.id];
                 switch (el.filter) {
                     case "completed":
-                        tasksForRender = tasks[el.id].filter(t => t.isDone)
+                        tasksForRender = tasksForRender.filter(t => t.isDone)
                         break
                     case "active":
-                        tasksForRender = tasks[el.id].filter(t => !t.isDone)
+                        tasksForRender = tasksForRender.filter(t => !t.isDone)
                         break
                     default:
                         tasksForRender = tasks[el.id]
