@@ -1,11 +1,16 @@
 import React, {useState} from 'react';
 import './App.css';
-import {TaskType, Todolist} from './Todolist';
+import {TaskType, Todolist} from './Components/Todolist';
 import {v1} from 'uuid';
 
 export type FilterValuesType = "all" | "active" | "completed";
 
-export type TodolistsType = { id: string, title: string, filter: FilterValuesType }
+export type TodolistsType = {
+    id: string,
+    title: string,
+    filter: FilterValuesType
+}
+
 export type TasksType = {
     [key: string]: Array<TaskType>
 }
@@ -37,16 +42,21 @@ function App() {
         ]
     });
 
-    function removeTask(todolistID: string, taskID: string) {
+    const removeTodolist =(todolistsID: string) => {
+        setTodolists(todolists.filter(el => el.id !== todolistsID))
+        delete tasks[todolistsID]
+    }
+
+    const removeTask = (todolistID: string, taskID: string) => {
         setTasks({...tasks, [todolistID]: tasks[todolistID].filter(el => el.id !== taskID)})
     }
 
-    function addTask(todolistID: string, title: string) {
+    const addTask = (todolistID: string, title: string) => {
         let newTask = {id: v1(), title: title, isDone: false};
         setTasks({...tasks, [todolistID]: [newTask, ...tasks[todolistID]]})
     }
 
-    function changeStatus(todolistID: string, taskId: string, isDone: boolean) {
+    const changeStatus = (todolistID: string, taskId: string, isDone: boolean) => {
         setTasks({...tasks, [todolistID]: tasks[todolistID].map(el => el.id === taskId ? {...el, isDone: isDone} : el)})
     }
 
@@ -60,12 +70,12 @@ function App() {
                         title={el.title}
                         tasks={tasks[el.id]}
                         removeTask={removeTask}
-                       // changeFilter={changeFilter}
                         addTask={addTask}
                         changeTaskStatus={changeStatus}
                         filter={el.filter}
                         setTodolists={setTodolists}
                         todolists={todolists}
+                        removeTodolist={removeTodolist}
                     />
                 )
             })}
