@@ -2,6 +2,7 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType, TodolistsType} from '../App';
 import {MapComponent} from "./MapComponent";
 import {AddItemForm} from "./AddItemForm";
+import {EditableSpan} from "./EditableSpan";
 
 export type TaskType = {
     id: string
@@ -21,6 +22,7 @@ type PropsType = {
     setTodolists: (todolists: Array<TodolistsType>) => void
     todolists: Array<TodolistsType>
     removeTodolist: (todolistID: string)=>void
+    changeTodolistTitle: (todolistID: string, newTitle: string)=>void
 }
 
 export function Todolist(props: PropsType) {
@@ -50,6 +52,10 @@ export function Todolist(props: PropsType) {
         }
     }
 
+    const changeTodolistTitle = (newTitle: string) => {
+        props.changeTodolistTitle(props.todolistID, newTitle);
+    }
+
     const onAllClickHandler = () => changeFilter(props.todolistID, "all");
     const onActiveClickHandler = () => changeFilter(props.todolistID, "active");
     const onCompletedClickHandler = () => changeFilter(props.todolistID, "completed");
@@ -57,7 +63,7 @@ export function Todolist(props: PropsType) {
 
     return <div>
 
-        <h3>{props.title} <button onClick={removeTodolistHandler}>X</button></h3>
+        <h3><EditableSpan title={props.title} onChange={changeTodolistTitle} /> <button onClick={removeTodolistHandler}>X</button></h3>
         <AddItemForm addItem={addTask} />
         <MapComponent
             tasksForTodolist={tasksForTodolist}
