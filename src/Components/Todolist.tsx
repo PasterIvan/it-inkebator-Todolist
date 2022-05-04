@@ -16,6 +16,7 @@ type PropsType = {
     removeTask: (todolistID: string, taskId: string) => void
     addTask: (todolistID: string, title: string) => void
     changeTaskStatus: (todolistID: string, taskId: string, isDone: boolean) => void
+    changeTaskTitle: (todolistID: string, taskId: string, newTitle: string) => void
     filter: FilterValuesType
     setTodolists: (todolists: Array<TodolistsType>) => void
     todolists: Array<TodolistsType>
@@ -63,6 +64,7 @@ export function Todolist(props: PropsType) {
             removeTask={props.removeTask}
             changeTaskStatus={props.changeTaskStatus}
             todolistID={props.todolistID}
+            changeTaskTitle={props.changeTaskTitle}
         />
         <div>
             <button className={props.filter === 'all' ? "active-filter" : ""}
