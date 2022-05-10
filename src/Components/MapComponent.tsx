@@ -1,6 +1,8 @@
 import React, {ChangeEvent, useState} from 'react';
 import {TaskType} from "./Todolist";
 import {EditableSpan} from "./EditableSpan";
+import {Checkbox, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
 
 type PropsType={
     todolistID: string
@@ -26,11 +28,11 @@ export const MapComponent = ({todolistID, tasksForTodolist,removeTask, ...props}
                 }
 
                 return <li key={t.id} className={t.isDone ? "is-done" : ""}>
-                    <input type="checkbox"
-                           onChange={onChangeStatusHandler}
-                           checked={t.isDone}/>
+                    <Checkbox defaultChecked onChange={onChangeStatusHandler} checked={t.isDone} />
                     <EditableSpan title={t.title} onChange={onChangeTitleHandler}/>
-                    <button onClick={onClickHandler}>x</button>
+                    <IconButton aria-label="delete">
+                        <Delete onClick={onClickHandler}/>
+                    </IconButton>
                 </li>
             })
             }
