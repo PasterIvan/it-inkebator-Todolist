@@ -18,7 +18,7 @@ test('correct todolist should be removed', () => {
     ]
 
     //const endState = todolistsReducer(startState, { type: 'REMOVE-TODOLIST', id: todolistId1})
-    const endState = todolistsReducer(startState,  removeTodolistAC(todolistId1))
+    const endState = todolistsReducer(startState, removeTodolistAC(todolistId1))
 
     expect(endState.length).toBe(1);
     expect(endState[0].id).toBe(todolistId2);
@@ -75,7 +75,7 @@ test('correct filter of todolist should be changed', () => {
         filter: newFilter
     };
 
-    const endState = todolistsReducer(startState, changeFilterAC(todolistId2,newFilter));
+    const endState = todolistsReducer(startState, changeFilterAC(todolistId2, newFilter));
 
     expect(endState[0].filter).toBe("all");
     expect(endState[1].filter).toBe(newFilter);
