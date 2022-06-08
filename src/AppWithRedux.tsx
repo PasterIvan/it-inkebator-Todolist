@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
@@ -19,15 +19,15 @@ export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
-function App() {
-
+export const AppWithRedux = () => {
+    console.log('AppWithRedux')
     const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists)
 
     const dispatch = useDispatch()
 
-    function addTodolist(title: string) {
+    const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistAC(title))
-    }
+    }, [dispatch])
 
     return (
         <div className="App">
@@ -67,4 +67,3 @@ function App() {
     );
 }
 
-export default App;

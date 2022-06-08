@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, Checkbox, IconButton} from '@material-ui/core';
@@ -19,8 +19,8 @@ type PropsType = {
     todolist: TodolistType
 }
 
-export function Todolist({todolist}: PropsType) {
-
+export const Todolist = React.memo(({todolist}: PropsType) =>{
+    console.log('Todolist')
     let tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[todolist.id])
     const dispatch = useDispatch()
 
@@ -31,20 +31,20 @@ export function Todolist({todolist}: PropsType) {
         tasks = tasks.filter(t => t.isDone === true);
     }
 
-    const addTask = (title: string) => {
+    const addTask = useCallback((title: string) => {
         dispatch(addTaskAC(title, todolist.id))
-    }
+    },[dispatch, todolist.id])
 
-    const removeTodolist = () => {
+    const removeTodolist = useCallback(() => {
         dispatch(removeTodolistAC(todolist.id))
-    }
-    const changeTodolistTitle = (title: string) => {
+    },[dispatch, todolist.id])
+    const changeTodolistTitle = useCallback((title: string) => {
         dispatch(changeTodolistTitleAC(todolist.id, title))
-    }
+    },[dispatch, todolist.id])
 
-    const onAllClickHandler = () => dispatch(changeTodolistFilterAC(todolist.id, "all"))
-    const onActiveClickHandler = () => dispatch(changeTodolistFilterAC(todolist.id, "active"))
-    const onCompletedClickHandler = () => dispatch(changeTodolistFilterAC(todolist.id, "completed"))
+    const onAllClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, "all")),[dispatch, todolist.id])
+    const onActiveClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, "active")),[dispatch, todolist.id])
+    const onCompletedClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, "completed")),[dispatch, todolist.id])
 
     return <div>
         <h3> <EditableSpan value={todolist.title} onChange={changeTodolistTitle} />
@@ -64,7 +64,6 @@ export function Todolist({todolist}: PropsType) {
                     const onTitleChangeHandler = (newValue: string) => {
                         dispatch(changeTaskTitleAC(t.id, newValue, todolist.id))
                     }
-
 
                     return <div key={t.id} className={t.isDone ? "is-done" : ""}>
                         <Checkbox
@@ -97,6 +96,4 @@ export function Todolist({todolist}: PropsType) {
             </Button>
         </div>
     </div>
-}
-
-
+})
