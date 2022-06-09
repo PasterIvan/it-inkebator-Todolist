@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import {Box, Button, FormControl, IconButton, TextField} from '@material-ui/core';
 import {AddBox} from '@material-ui/icons';
 
@@ -20,11 +20,11 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType)=> {
         }
     }
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
-    }
+    }, [])
 
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyPressHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
         if (error !== null){
             setError(null)
         }
@@ -32,7 +32,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType)=> {
         if (e.charCode === 13) {
             addItem();
         }
-    }
+    }, [])
 
     return <div>
         <TextField variant="outlined"
