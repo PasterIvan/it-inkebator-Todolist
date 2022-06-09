@@ -11,14 +11,14 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType)=> {
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
 
-    const addItem = () => {
+    const addItem = useCallback(() => {
         if (title.trim() !== "") {
             props.addItem(title);
             setTitle("");
         } else {
             setError("Title is required");
         }
-    }
+    }, [props, title])
 
     const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
@@ -32,7 +32,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType)=> {
         if (e.charCode === 13) {
             addItem();
         }
-    }, [])
+    }, [addItem, error])
 
     return <div>
         <TextField variant="outlined"

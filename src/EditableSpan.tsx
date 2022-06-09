@@ -21,7 +21,7 @@ export const EditableSpan = React.memo((props: EditableSpanPropsType) => {
         const activateViewMode = useCallback(() => {
             setEditMode(false);
             props.onChange(title);
-        }, [title])
+        }, [props, title])
 
         const changeTitle = useCallback((e: ChangeEvent<HTMLInputElement>) => {
             setTitle(e.currentTarget.value)
