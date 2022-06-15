@@ -9,23 +9,23 @@ import {TodolistType} from "./AppWithRedux";
 
 type PropsType = {
     task: TaskType
-    todolist: TodolistType
+    todolistId: string
 }
 
-export const Task = React.memo(({task, todolist}:PropsType) => {
+export const Task = React.memo(({task, todolistId}:PropsType) => {
     console.log('Task')
     const dispatch = useDispatch()
 
-    const onClickHandler = useCallback(() => dispatch(removeTaskAC(task.id, todolist.id)),[dispatch, task.id, todolist.id])
+    const onClickHandler = useCallback(() => dispatch(removeTaskAC(task.id, todolistId)),[dispatch, task.id, todolistId])
 
     const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue = e.currentTarget.checked;
-        dispatch(changeTaskStatusAC(task.id, newIsDoneValue, todolist.id));
-    },[dispatch, task.id, todolist.id])
+        dispatch(changeTaskStatusAC(task.id, newIsDoneValue, todolistId));
+    },[dispatch, task.id, todolistId])
 
     const onTitleChangeHandler = useCallback((newValue: string) => {
-        dispatch(changeTaskTitleAC(task.id, newValue, todolist.id))
-    },[dispatch, task.id, todolist.id])
+        dispatch(changeTaskTitleAC(task.id, newValue, todolistId))
+    },[dispatch, task.id, todolistId])
 
     return <div key={task.id} className={task.isDone ? "is-done" : ""}>
         <Checkbox
