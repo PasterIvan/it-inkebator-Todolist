@@ -28,7 +28,6 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType)=> {
         if (error !== null){
             setError(null)
         }
-        setError(null);
         if (e.charCode === 13) {
             addItem();
         }

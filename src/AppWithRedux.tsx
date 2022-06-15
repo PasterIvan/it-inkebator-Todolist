@@ -49,10 +49,7 @@ export const AppWithRedux = () => {
                     <AddItemForm addItem={addTodolist}/>
                 </Grid>
                 <Grid container spacing={3}>
-                    {
-                        todolists.map(tl => {
-
-
+                    {todolists.map(tl => {
                             return <Grid item>
                                 <Paper style={{padding: "10px"}}>
                                     <Todolist
