@@ -39,22 +39,18 @@ const instance = axios.create({
 export const taskAPI = {
 
     getTasks(todolistId: string) {
-        const promise = instance.get<ResponseGetType>(`${todolistId}/tasks`)
-        return promise
+        return instance.get<ResponseGetType>(`${todolistId}/tasks`)
     },
 
     createTask(todolistId: string, title: string) {
-        const promise = instance.post<ResponseType>(`${todolistId}/tasks`, {title: title})
-        return promise
+        return instance.post<ResponseType>(`${todolistId}/tasks`, {title: title})
     },
 
     deleteTask(todolistId: string, taskId: string) {
-        const promise = instance.delete<ResponseType>(`${todolistId}/tasks/${taskId}`)
-        return promise
+        return instance.delete<ResponseType>(`${todolistId}/tasks/${taskId}`)
     },
 
     updateTaskTitle(todolistId: string, taskId: string, title: string) {
-        const promise = instance.put<ResponseType>(`${todolistId}/tasks/${taskId}`, {title: title})
-        return promise
+        return instance.put<ResponseType>(`${todolistId}/tasks/${taskId}`, {title: title})
     },
 }
