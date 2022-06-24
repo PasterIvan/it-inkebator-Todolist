@@ -1,7 +1,8 @@
-
 import {v1} from "uuid";
 import {AddTodolistActionType, RemoveTodolistActionType} from "./todolists-reducer";
 import {TasksStateType} from "../AppWithRedux";
+import {TaskPriorities, TaskStatuses} from "../api/todolist-api";
+
 
 const REMOVE_TASK = 'REMOVE_TASK'
 const ADD_TASK = 'ADD_TASK'
@@ -33,7 +34,10 @@ export const tasksReducer = (state = initialState, action: ActionsType): TasksSt
         case ADD_TASK:
             return {
                 ...state,
-                [action.todolistId]: [{id: v1(), title: action.title, isDone: false}, ...state[action.todolistId]]
+                [action.todolistId]: [{id: v1(), title: action.title, status: TaskStatuses.New, description: '',
+                     startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low,
+                    todoListId: action.todolistId
+                }, ...state[action.todolistId]]
             }
         case CHANGE_TASK_STATUS:
             return {
