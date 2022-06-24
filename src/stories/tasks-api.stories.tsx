@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
-import {taskAPI} from "../api/task-api";
+import {taskAPI} from "../api/todolist-api";
 
 export default {
-    title: 'API TASK'
+    title: 'API/TASK'
 }
 
 const todolistId = 'e4f06a15-b931-4448-b7ff-5d7aae116d8b'
-const taskId = 'd0b70a30-e1a1-497c-afba-db052ae2cd09'
+const taskId = 'bf61692d-b667-422a-95c4-c34f7e9cb00b'
 
 export const GetTasks = () => {
     const [state, setState] = useState<any>(null)
@@ -24,7 +24,7 @@ export const CreateTask = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
 
-        taskAPI.createTask(todolistId, 'Task 2 TD3')
+        taskAPI.createTask(todolistId, 'Task 3 TD3')
             .then((res) => {
                 setState(res.data)
             })
