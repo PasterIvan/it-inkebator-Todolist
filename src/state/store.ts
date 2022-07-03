@@ -1,7 +1,11 @@
-import { tasksReducer } from './tasks-reducer'
-import { todolistsReducer } from './todolists-reducer'
+import {ActionTypeForTaskReducer, tasksReducer} from './tasks-reducer'
+import {ActionsTypeForTodoListsReducer, todolistsReducer } from './todolists-reducer'
 import { combineReducers, legacy_createStore } from 'redux'
+import {ThunkAction} from "redux-thunk";
 
+export type AppActionsType = ActionTypeForTaskReducer | ActionsTypeForTodoListsReducer
+
+export type AppThunkType<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
 const rootReducer = combineReducers({

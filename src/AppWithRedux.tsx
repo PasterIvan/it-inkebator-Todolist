@@ -3,10 +3,10 @@ import './App.css';
 import {AddItemForm} from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
-import {addTodolistAC, fetchTodolistsTC, TodolistDomainType} from "./state/todolists-reducer";
+import {addTodolistAC, addTodoListTC, fetchTodolistsTC, TodolistDomainType} from "./state/todolists-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {TaskType} from "./api/todolists-a-p-i";
+import {TaskType} from "./api/todolistsAPI";
 import {Todolist} from "./Todolist";
 
 
@@ -16,17 +16,15 @@ export type TasksStateType = {
 
 export const AppWithRedux = () => {
 
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
-
     const dispatch = useDispatch()
 
     const addTodolist = useCallback((title: string) => {
-        dispatch(addTodolistAC(title))
+        dispatch(addTodoListTC(title))
     }, [dispatch])
 
     useEffect(() => {
         dispatch(fetchTodolistsTC())
-    }, [])
+    }, [dispatch])
 
     return (
         <div className="App">

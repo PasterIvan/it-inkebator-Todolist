@@ -4,7 +4,7 @@ import {Checkbox, IconButton} from "@material-ui/core";
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
 import {useDispatch} from "react-redux";
-import {TaskStatuses, TaskType} from "./api/todolists-a-p-i";
+import {TaskStatuses, TaskType} from "./api/todolistsAPI";
 
 type PropsType = {
     task: TaskType

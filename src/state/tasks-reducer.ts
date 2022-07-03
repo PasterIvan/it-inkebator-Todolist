@@ -1,9 +1,9 @@
 import {v1} from "uuid";
 import {AddTodolistActionType, RemoveTodolistActionType} from "./todolists-reducer";
 import {TasksStateType} from "../AppWithRedux";
-import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, todolistsAPI} from "../api/todolists-a-p-i";
+import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, todolistsAPI} from "../api/todolistsAPI";
 import {Dispatch} from "redux";
-import { AppRootStateType } from "./store";
+import {AppRootStateType, AppThunkType} from "./store";
 
 const REMOVE_TASK = 'REMOVE_TASK'
 const ADD_TASK = 'ADD_TASK'
@@ -17,7 +17,7 @@ export type ChangeTaskStatusActionType = ReturnType<typeof changeTaskStatusAC>
 export type ChangeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>
 export type SetTaskActionType = ReturnType<typeof setTasksAC>
 
-type ActionsType =
+export type ActionTypeForTaskReducer =
     RemoveTaskActionType
     | AddTaskActionType
     | ChangeTaskStatusActionType
@@ -28,7 +28,7 @@ type ActionsType =
 
 const initialState: TasksStateType = {}
 
-export const tasksReducer = (state = initialState, action: ActionsType): TasksStateType => {
+export const tasksReducer = (state = initialState, action: ActionTypeForTaskReducer): TasksStateType => {
     switch (action.type) {
         case REMOVE_TASK:
             return {
@@ -95,7 +95,7 @@ export const setTasksAC = (todolistId: string, tasks: Array<TaskType>) => {
     return {type: SET_TASKS, todolistId, tasks}
 }
 
-export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
+export const fetchTasksTC = (todolistId: string): AppThunkType => (dispatch: Dispatch) => {
     tasksAPI.getTasks(todolistId)
         .then((res) => {
             const tasks = res.data.item
@@ -103,7 +103,7 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
         })
 }
 
-export const createTasksTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+export const createTasksTC = (todolistId: string, title: string): AppThunkType => (dispatch: Dispatch) => {
     tasksAPI.createTask(todolistId, title)
         .then((res) => {
             const task = res.data.data.item
@@ -111,7 +111,7 @@ export const createTasksTC = (todolistId: string, title: string) => (dispatch: D
         })
 }
 
-export const removeTasksTC = (taskId: string, todolistId: string) => (dispatch: Dispatch) => {
+export const removeTasksTC = (taskId: string, todolistId: string): AppThunkType => (dispatch: Dispatch) => {
     tasksAPI.deleteTask(todolistId, taskId)
         .then((res) => {
             if (res.data.resultCode === 0) {
@@ -120,7 +120,7 @@ export const removeTasksTC = (taskId: string, todolistId: string) => (dispatch: 
         })
 }
 
-export const updateTaskStatusTC = (taskId: string, todolistId: string, status: TaskStatuses) => {
+export const updateTaskStatusTC = (taskId: string, todolistId: string, status: TaskStatuses): AppThunkType => {
     return (dispatch: Dispatch, getState: () => AppRootStateType) => {
 
 // так как мы обязаны на сервер отправить все св-ва, которые сервер ожидает, а не только
