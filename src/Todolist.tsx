@@ -13,14 +13,13 @@ import {
     TodolistDomainType
 } from "./state/todolists-reducer";
 import {Task} from "./Task";
-import {TaskStatuses, TaskType} from "./api/todolist-api";
+import {TaskStatuses, TaskType} from "./api/todolists-a-p-i";
 
 type PropsType = {
     todolist: TodolistDomainType
 }
 
 export const Todolist = React.memo(({todolist}: PropsType) =>{
-    console.log('Todolist')
 
     let tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[todolist.id])
     const dispatch = useDispatch()
