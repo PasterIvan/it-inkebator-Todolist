@@ -18,7 +18,7 @@ type PropsType = {
     todolist: TodolistDomainType
 }
 
-export const Todolist = React.memo(({todolist}: PropsType) =>{
+export const Todolist = React.memo(({todolist}: PropsType) => {
 
     let tasks = useAppSelector(state => state.tasks[todolist.id])
     const dispatch = useAppDispatch()
@@ -33,39 +33,39 @@ export const Todolist = React.memo(({todolist}: PropsType) =>{
 
     const addTask = useCallback((title: string) => {
         dispatch(createTaskTC(todolist.id, title))
-    },[dispatch, todolist.id])
+    }, [dispatch, todolist.id])
 
     const removeTodolist = useCallback(() => {
         dispatch(removeTodolistTC(todolist.id))
-    },[dispatch, todolist.id])
+    }, [dispatch, todolist.id])
 
     const changeTodolistTitle = useCallback((title: string) => {
         dispatch(changeTodolistTitleAC(todolist.id, title))
-    },[dispatch, todolist.id])
+    }, [dispatch, todolist.id])
 
-    const onAllClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, "all")),[dispatch, todolist.id])
-    const onActiveClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, "active")),[dispatch, todolist.id])
-    const onCompletedClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, "completed")),[dispatch, todolist.id])
+    const onAllClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, "all")), [dispatch, todolist.id])
+    const onActiveClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, "active")), [dispatch, todolist.id])
+    const onCompletedClickHandler = useCallback(() => dispatch(changeTodolistFilterAC(todolist.id, "completed")), [dispatch, todolist.id])
 
     useEffect(() => {
         dispatch(fetchTasksTC(todolist.id))
     }, [dispatch, todolist.id])
 
     return <div>
-        <h3> <EditableSpan value={todolist.title} onChange={changeTodolistTitle} />
+        <h3><EditableSpan value={todolist.title} onChange={changeTodolistTitle}/>
             <IconButton onClick={removeTodolist}>
-                <Delete />
+                <Delete/>
             </IconButton>
         </h3>
         <AddItemForm addItem={addTask}/>
         <div>
             {
                 tasks && tasks.map(t => {
-                   return <Task key={t.id} task={t} todolistId={todolist.id}/>
+                    return <Task key={t.id} task={t} todolistId={todolist.id}/>
                 })
             }
         </div>
-        <div style={{ paddingTop: "10px"}}>
+        <div style={{paddingTop: "10px"}}>
             <Button variant={todolist.filter === 'all' ? 'outlined' : 'text'}
                     onClick={onAllClickHandler}
                     color={'default'}

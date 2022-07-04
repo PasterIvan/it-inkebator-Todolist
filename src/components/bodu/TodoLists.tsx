@@ -2,14 +2,17 @@ import {Container, Grid, Paper} from "@material-ui/core";
 import {AddItemForm} from "../../AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 import React, {useCallback, useEffect} from "react";
-import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
-import {addTodoListTC, fetchTodolistsTC} from "../../state/todolists-reducer";
+import {useAppDispatch} from "../../hooks/hooks";
+import {addTodoListTC, fetchTodolistsTC, TodolistDomainType} from "../../state/todolists-reducer";
+import {TodolistType} from "../../api/todolistsAPI";
 
-export const TodoLists = () => {
+type TodoListsPropsType = {
+    todolists: Array<TodolistDomainType>
+}
+
+export const TodoLists = ({todolists}: TodoListsPropsType) => {
 
     const dispatch = useAppDispatch()
-
-    const todolists = useAppSelector(state => state.todolists)
 
     const addTodolist = useCallback((title: string) => {
         dispatch(addTodoListTC(title))
