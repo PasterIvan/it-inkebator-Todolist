@@ -48,7 +48,7 @@ export type ResponseType<D = {}> = {
 export type GetTaskResponseType = {
     item: TaskType[]
     totalCount: number
-    error: string
+    error: string | null
 }
 
 export type UpdateTaskModelType = {

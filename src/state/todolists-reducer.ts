@@ -1,6 +1,5 @@
 import {todolistsAPI, TodolistType} from "../api/todolistsAPI";
 import {AppThunkType} from "./store";
-import {Dispatch} from "redux";
 
 const REMOVE_TODOLIST = 'REMOVE-TODOLIST'
 const ADD_TODOLIST = 'ADD-TODOLIST'
@@ -31,13 +30,13 @@ const initialState: Array<TodolistDomainType> = []
 export const todolistsReducer = (state: Array<TodolistDomainType> = initialState, action: ActionsTypeForTodoListsReducer): Array<TodolistDomainType> => {
     switch (action.type) {
         case REMOVE_TODOLIST: {
-            return state.filter(tl => tl.id !== action.id)
+            return state.filter(tl => tl.id !== action.todolistId)
         }
         case ADD_TODOLIST: {
             return ([{...action.todolist, filter: 'all'}, ...state])
         }
         case CHANGE_TODOLIST_TITLE: {
-            const todolist = state.find(tl => tl.id === action.id);
+            const todolist = state.find(tl => tl.id === action.todolistId);
             if (todolist) {
                 // если нашёлся - изменим ему заголовок
                 todolist.title = action.title;
@@ -45,7 +44,7 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
             return [...state]
         }
         case CHANGE_TODOLIST_FILTER: {
-            const todolist = state.find(tl => tl.id === action.id);
+            const todolist = state.find(tl => tl.id === action.todolistId);
             if (todolist) {
                 // если нашёлся - изменим ему заголовок
                 todolist.filter = action.filter;
@@ -64,16 +63,16 @@ export const todolistsReducer = (state: Array<TodolistDomainType> = initialState
 }
 
 export const removeTodolistAC = (todolistId: string) => {
-    return {type: REMOVE_TODOLIST, id: todolistId} as const
+    return {type: REMOVE_TODOLIST, todolistId} as const
 }
 export const addTodolistAC = (todolist: TodolistType) => {
     return {type: ADD_TODOLIST, todolist} as const
 }
-export const changeTodolistTitleAC = (id: string, title: string) => {
-    return {type: CHANGE_TODOLIST_TITLE, id: id, title: title} as const
+export const changeTodolistTitleAC = (todolistId: string, title: string) => {
+    return {type: CHANGE_TODOLIST_TITLE, todolistId, title} as const
 }
-export const changeTodolistFilterAC = (id: string, filter: FilterValuesType) => {
-    return {type: CHANGE_TODOLIST_FILTER, id: id, filter: filter} as const
+export const changeTodolistFilterAC = (todolistId: string, filter: FilterValuesType) => {
+    return {type: CHANGE_TODOLIST_FILTER, todolistId, filter} as const
 }
 export const fetchTodolistsAC = (todolists: Array<TodolistType>) => {
     return {type: SET_TODOLISTS, todolists} as const
