@@ -1,6 +1,6 @@
 import {AddTodolistActionType, RemoveTodolistActionType} from "./todolists-reducer";
-import {TasksStateType} from "../AppWithRedux";
-import {tasksAPI, TaskStatuses, TaskType} from "../api/todolistsAPI";
+
+import {tasksAPI, TasksStateType, TaskStatuses, TaskType} from "../api/todolistsAPI";
 import {AppRootStateType, AppThunkType} from "./store";
 
 const REMOVE_TASK = 'REMOVE_TASK'

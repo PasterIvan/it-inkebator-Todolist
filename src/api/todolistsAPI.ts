@@ -6,6 +6,9 @@ export type TodolistType = {
     order: number
     title: string
 }
+export type TasksStateType = {
+    [key: string]: Array<TaskType>
+}
 
 export enum TaskStatuses {
     New,
