@@ -3,7 +3,7 @@ import React, {useCallback, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks";
 import {
     changeTodolistFilterAC,
-    changeTodolistTitleAC,
+    changeTodolistTitleTC,
     FilterValuesType,
     removeTodolistTC,
     TodolistDomainType
@@ -24,7 +24,7 @@ export const TodoListContainer: React.FC<TodoListsPropsType> = ({todolist}) => {
     }, [dispatch, todolist.id])
 
     const changeTodolistTitle = useCallback((title: string) => {
-        dispatch(changeTodolistTitleAC(todolist.id, title))
+        dispatch(changeTodolistTitleTC(todolist.id, title))
     }, [dispatch, todolist.id])
 
     const changeTodolistFilter = useCallback((filter: FilterValuesType) => {

@@ -83,7 +83,7 @@ export const createTaskAC = (todolistId: string, task: TaskType) => {
 export const changeTaskStatusAC = (todolistId: string, id: string, status: TaskStatuses) => {
     return {type: CHANGE_TASK_STATUS, todolistId, id, status} as const
 }
-export const changeTaskTitleAC = (id: string, title: string, todolistId: string) => {
+export const changeTaskTitleAC = (todolistId: string, id: string, title: string) => {
     return {type: CHANGE_TASK_TITLE, todolistId, id, title} as const
 }
 export const setTasksAC = (todolistId: string, tasks: Array<TaskType>) => {
@@ -102,16 +102,12 @@ export const createTaskTC = (todolistId: string, title: string): AppThunkType =>
 
 export const removeTasksTC = (id: string, todolistId: string): AppThunkType => async dispatch => {
     const res = await tasksAPI.deleteTask(todolistId, id)
-    res.data.resultCode === 0 &&
-    dispatch(removeTaskAC(todolistId, id))
+    res.data.resultCode === 0 && dispatch(removeTaskAC(todolistId, id))
 }
 
 export const updateTaskStatusTC = (todolistId: string, id: string, status: TaskStatuses): AppThunkType => {
     return (dispatch,
             getState: () => AppRootStateType) => {
-
-// так как мы обязаны на сервер отправить все св-ва, которые сервер ожидает, а не только
-// те, которые мы хотим обновить, соответственно нам нужно в этом месте взять таску целиком  // чтобы у неё отобрать остальные св-ва
 
         const allTasksFromState = getState().tasks;
         const tasksForCurrentTodolist = allTasksFromState[todolistId]
@@ -129,6 +125,31 @@ export const updateTaskStatusTC = (todolistId: string, id: string, status: TaskS
                 status: status
             }).then(() => {
                 const action = changeTaskStatusAC(todolistId, id, status)
+                dispatch(action)
+            })
+        }
+    }
+}
+export const updateTaskTitleTC = (todolistId: string, id: string, title: string): AppThunkType => {
+    return (dispatch,
+            getState: () => AppRootStateType) => {
+
+        const allTasksFromState = getState().tasks;
+        const tasksForCurrentTodolist = allTasksFromState[todolistId]
+        const task = tasksForCurrentTodolist.find(t => {
+            return t.id === id
+        })
+
+        if (task) {
+            tasksAPI.updateTask(todolistId, id, {
+                title: title,
+                startDate: task.startDate,
+                priority: task.priority,
+                description: task.description,
+                deadline: task.deadline,
+                status: task.status
+            }).then(() => {
+                const action = changeTaskTitleAC(todolistId, id, title)
                 dispatch(action)
             })
         }

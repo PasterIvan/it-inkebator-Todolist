@@ -1,5 +1,6 @@
-import {todolistsAPI, TodolistType} from "../api/todolistsAPI";
-import {AppThunkType} from "./store";
+import {tasksAPI, todolistsAPI, TodolistType} from "../api/todolistsAPI";
+import {AppRootStateType, AppThunkType} from "./store";
+import {changeTaskTitleAC} from "./tasks-reducer";
 
 const REMOVE_TODOLIST = 'REMOVE-TODOLIST'
 const ADD_TODOLIST = 'ADD-TODOLIST'
@@ -91,4 +92,8 @@ export const removeTodolistTC = (todolistId: string): AppThunkType => async disp
     const res = await todolistsAPI.deleteTodolist(todolistId)
     res.data.resultCode === 0 &&
     dispatch(removeTodolistAC(todolistId))
+}
+export const changeTodolistTitleTC = (todolistId: string, title: string): AppThunkType => async dispatch => {
+    await todolistsAPI.updateTodolistTitle(todolistId, title)
+    dispatch(changeTodolistTitleAC(todolistId, title))
 }

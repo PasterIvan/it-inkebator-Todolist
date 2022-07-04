@@ -18,14 +18,16 @@ type PropsType = {
     addTask: (title: string) => void
 }
 
-export const Todolist: React.FC<PropsType> = React.memo(({title,
-                                        filter,
-                                        todolistId,
-                                        tasks,
-                                        changeTodolistTitle,
-                                        removeTodolist,
-                                        changeTodolistFilter,
-                                        addTask}) => {
+export const Todolist: React.FC<PropsType> = React.memo(({
+                                                             title,
+                                                             filter,
+                                                             todolistId,
+                                                             tasks,
+                                                             changeTodolistTitle,
+                                                             removeTodolist,
+                                                             changeTodolistFilter,
+                                                             addTask
+                                                         }) => {
 
     return <div>
         <h3><EditableSpan value={title} onChange={changeTodolistTitle}/>
@@ -43,16 +45,16 @@ export const Todolist: React.FC<PropsType> = React.memo(({title,
         </div>
         <div style={{paddingTop: "10px"}}>
             <Button variant={filter === 'all' ? 'outlined' : 'text'}
-                    onClick={()=>changeTodolistFilter('all')}
+                    onClick={() => changeTodolistFilter('all')}
                     color={'default'}
             >All
             </Button>
             <Button variant={filter === 'active' ? 'outlined' : 'text'}
-                    onClick={()=>changeTodolistFilter('active')}
+                    onClick={() => changeTodolistFilter('active')}
                     color={'primary'}>Active
             </Button>
             <Button variant={filter === 'completed' ? 'outlined' : 'text'}
-                    onClick={()=>changeTodolistFilter('completed')}
+                    onClick={() => changeTodolistFilter('completed')}
                     color={'secondary'}>Completed
             </Button>
         </div>

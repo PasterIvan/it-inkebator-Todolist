@@ -1,4 +1,4 @@
-import {changeTaskTitleAC, removeTasksTC, updateTaskStatusTC} from "../../../../state/tasks-reducer";
+import {changeTaskTitleAC, removeTasksTC, updateTaskStatusTC, updateTaskTitleTC} from "../../../../state/tasks-reducer";
 import React, {ChangeEvent, useCallback} from "react";
 import {TaskStatuses, TaskType} from "../../../../api/todolistsAPI";
 import {useAppDispatch} from "../../../../hooks/hooks";
@@ -16,18 +16,18 @@ export const TaskContainer: React.FC<PropsType> = React.memo(({task, todolistId}
     const removeTask = useCallback(() => dispatch(removeTasksTC(id, todolistId)), [dispatch, id, todolistId])
 
     const changeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(updateTaskStatusTC( todolistId, id,e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New));
+        dispatch(updateTaskStatusTC(todolistId, id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New));
     }, [dispatch, todolistId, id])
 
-    const changeTaskTitle = useCallback((newValue: string) => {
-        dispatch(changeTaskTitleAC(todolistId, id, newValue ))
+    const changeTaskTitle = useCallback((title: string) => {
+        dispatch(updateTaskTitleTC(todolistId, id, title))
     }, [dispatch, todolistId, id])
 
     return <Task title={title}
-              status={status}
-              removeTask={removeTask}
-              changeTaskTitle={changeTaskTitle}
-              changeTaskStatus={changeTaskStatus}/>
+                 status={status}
+                 removeTask={removeTask}
+                 changeTaskTitle={changeTaskTitle}
+                 changeTaskStatus={changeTaskStatus}/>
 
 
 })

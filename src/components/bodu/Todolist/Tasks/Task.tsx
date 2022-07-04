@@ -12,11 +12,13 @@ export type TaskPropsType = {
     status: TaskStatuses
 }
 
-export const Task: React.FC<TaskPropsType> = React.memo(({ title,
-                                    status,
-                                    changeTaskStatus,
-                                    changeTaskTitle,
-                                    removeTask}) => {
+export const Task: React.FC<TaskPropsType> = React.memo(({
+                                                             title,
+                                                             status,
+                                                             changeTaskStatus,
+                                                             changeTaskTitle,
+                                                             removeTask
+                                                         }) => {
 
     return <div className={status === TaskStatuses.Completed ? "is-done" : ""}>
         <Checkbox
