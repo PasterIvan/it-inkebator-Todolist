@@ -46,7 +46,7 @@ export type ResponseType<D = {}> = {
 }
 
 export type GetTaskResponseType = {
-    item: TaskType[]
+    items: TaskType[]
     totalCount: number
     error: string | null
 }

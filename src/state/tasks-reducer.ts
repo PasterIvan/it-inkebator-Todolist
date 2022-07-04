@@ -67,12 +67,8 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             delete copyState[action.todolistId];
             return copyState;
         }
-        case SET_TASKS: {
-            return {
-                ...state,
-                [action.todolistId]: action.tasks
-            }
-        }
+        case SET_TASKS:
+            return {...state, [action.todolistId]: action.tasks}
         default:
             return state
     }
@@ -96,12 +92,12 @@ export const setTasksAC = (todolistId: string, tasks: Array<TaskType>) => {
 
 export const fetchTasksTC = (todolistId: string): AppThunkType => async dispatch => {
     const res = await tasksAPI.getTasks(todolistId)
-    dispatch(setTasksAC(todolistId, res.data.item))
+    dispatch(setTasksAC(todolistId, res.data.items))
 }
 
 export const createTaskTC = (todolistId: string, title: string): AppThunkType => async dispatch => {
     const res = await tasksAPI.createTask(todolistId, title)
-    dispatch(createTaskAC(todolistId, res.data.data.item))
+    res.data.resultCode === 0 && dispatch(createTaskAC(todolistId, res.data.data.item))
 }
 
 export const removeTasksTC = (id: string, todolistId: string): AppThunkType => async dispatch => {

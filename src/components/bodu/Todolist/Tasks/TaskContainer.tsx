@@ -23,12 +23,11 @@ export const TaskContainer: React.FC<PropsType> = React.memo(({task, todolistId}
         dispatch(changeTaskTitleAC(todolistId, id, newValue ))
     }, [dispatch, todolistId, id])
 
-    return <div key={id} className={status === TaskStatuses.Completed ? "is-done" : ""}>
-        <Task title={title}
+    return <Task title={title}
               status={status}
               removeTask={removeTask}
               changeTaskTitle={changeTaskTitle}
               changeTaskStatus={changeTaskStatus}/>
-    </div>
+
 
 })
