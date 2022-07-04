@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, {AxiosResponse} from 'axios'
 
 export type TodolistType = {
     id: string
@@ -48,6 +48,15 @@ export type GetTaskResponseType = {
     error: string
 }
 
+export type UpdateTaskModelType = {
+    title: string
+    description: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
+}
+
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
@@ -63,7 +72,7 @@ export const todolistsAPI = {
     },
 
     createTodolist(title: string) {
-        return instance.post<ResponseType<{ item: TodolistType }>>(`/todo-lists/`, {title: title})
+        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>('todo-lists', {title});
     },
 
     deleteTodolist(todolistId: string) {
@@ -71,7 +80,7 @@ export const todolistsAPI = {
     },
 
     updateTodolistTitle(todolistId: string, title: string) {
-        return instance.put<ResponseType>(`/todo-lists/${todolistId}`, {title: title})
+        return instance.put<{ title: string }, AxiosResponse<ResponseType>>(`todo-lists/${todolistId}`, {title});
     },
 }
 
@@ -83,14 +92,14 @@ export const tasksAPI = {
     },
 
     createTask(todolistId: string, title: string) {
-        return instance.post<ResponseType<TaskType>>(`/todo-lists/${todolistId}/tasks`, {title: title})
+        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks`, {title});
     },
 
     deleteTask(todolistId: string, taskId: string) {
         return instance.delete<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`)
     },
 
-    updateTaskTitle(todolistId: string, taskId: string, title: string) {
-        return instance.put<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`, {title: title})
-    },
+    updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
+        return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+    }
 }

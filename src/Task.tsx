@@ -1,10 +1,10 @@
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducer";
+import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, removeTasksTC} from "./state/tasks-reducer";
 import React, {ChangeEvent, useCallback} from "react";
 import {Checkbox, IconButton} from "@material-ui/core";
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@material-ui/icons";
-import {useDispatch} from "react-redux";
 import {TaskStatuses, TaskType} from "./api/todolistsAPI";
+import {useAppDispatch} from "./hooks/hooks";
 
 type PropsType = {
     task: TaskType
@@ -12,10 +12,10 @@ type PropsType = {
 }
 
 export const Task = React.memo(({task, todolistId}:PropsType) => {
-    console.log('Task')
-    const dispatch = useDispatch()
 
-    const onClickHandler = useCallback(() => dispatch(removeTaskAC(task.id, todolistId)),[dispatch, task.id, todolistId])
+    const dispatch = useAppDispatch()
+
+    const onClickHandler = useCallback(() => dispatch(removeTasksTC(task.id, todolistId)),[dispatch, task.id, todolistId])
 
     const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const newIsDoneValue = +e.currentTarget.checked

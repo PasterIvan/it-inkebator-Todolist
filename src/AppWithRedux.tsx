@@ -3,11 +3,10 @@ import './App.css';
 import {AddItemForm} from './AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
-import {addTodolistAC, addTodoListTC, fetchTodolistsTC, TodolistDomainType} from "./state/todolists-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
+import {addTodoListTC, fetchTodolistsTC} from "./state/todolists-reducer";
 import {TaskType} from "./api/todolistsAPI";
 import {Todolist} from "./Todolist";
+import {useAppDispatch, useAppSelector} from "./hooks/hooks";
 
 
 export type TasksStateType = {
@@ -16,7 +15,9 @@ export type TasksStateType = {
 
 export const AppWithRedux = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
+
+    const todolists = useAppSelector(state => state.todolists)
 
     const addTodolist = useCallback((title: string) => {
         dispatch(addTodoListTC(title))
@@ -44,7 +45,7 @@ export const AppWithRedux = () => {
                     <AddItemForm addItem={addTodolist}/>
                 </Grid>
                 <Grid container spacing={3}>
-                    {todolists.map(tl => {
+                    {todolists && todolists.map(tl => {
                             return <Grid item>
                                 <Paper style={{padding: "10px"}}>
                                     <Todolist
