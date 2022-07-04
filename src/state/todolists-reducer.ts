@@ -84,12 +84,9 @@ export const fetchTodolistsTC = (): AppThunkType => async dispatch => {
     dispatch(fetchTodolistsAC(res.data))
 }
 
-export const addTodoListTC = (title: string): AppThunkType => (dispatch: Dispatch) => {
-    todolistsAPI.createTodolist(title)
-        .then(res => {
-                dispatch(addTodolistAC(res.data.data.item))
-            }
-        )
+export const addTodoListTC = (title: string): AppThunkType => async dispatch => {
+    const res = await todolistsAPI.createTodolist(title)
+    dispatch(addTodolistAC(res.data.data.item))
 }
 export const removeTodolistTC = (todolistId: string): AppThunkType => async dispatch => {
     const res = await todolistsAPI.deleteTodolist(todolistId)

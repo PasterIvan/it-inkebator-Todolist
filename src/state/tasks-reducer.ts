@@ -35,12 +35,10 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             stateCopy[action.todolistId] = newTasks;
             return stateCopy;
         }
-        case CREATE_TASK: {
-            const stateCopy = {...state}
-            const tasks = stateCopy[action.task.todoListId];
-            const newTasks = [action.task, ...tasks];
-            stateCopy[action.task.todoListId] = newTasks;
-            return stateCopy;
+        case CREATE_TASK:
+            return {
+            ...state,
+            [action.todoListId]: [action.task, ...state[action.todoListId]]
         }
         case CHANGE_TASK_STATUS: {
             let todolistTasks = state[action.todolistId];
@@ -84,8 +82,8 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
 export const removeTaskAC = (todolistId: string, taskId: string) => {
     return {type: REMOVE_TASK, todolistId, taskId} as const
 }
-export const createTaskAC = (task: TaskType) => {
-    return {type: CREATE_TASK, task} as const
+export const createTaskAC = (todoListId: string,task: TaskType) => {
+    return {type: CREATE_TASK, todoListId, task} as const
 }
 export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todolistId: string) => {
     return {type: CHANGE_TASK_STATUS, taskId, status, todolistId} as const
@@ -106,8 +104,7 @@ export const fetchTasksTC = (todolistId: string): AppThunkType => async dispatch
 
 export const createTaskTC = (todolistId: string, title: string): AppThunkType => async dispatch => {
     const res = await tasksAPI.createTask(todolistId, title)
-    const task = res.data.data.item
-    dispatch(createTaskAC(task))
+    dispatch(createTaskAC(todolistId, res.data.data.item))
 }
 
 export const removeTasksTC = (taskId: string, todolistId: string): AppThunkType => async dispatch => {

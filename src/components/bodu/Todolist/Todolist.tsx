@@ -10,9 +10,9 @@ import {
     removeTodolistTC,
     TodolistDomainType
 } from "../../../state/todolists-reducer";
-import {Task} from "./Tasks/Task";
 import {TaskStatuses} from "../../../api/todolistsAPI";
 import {useAppDispatch, useAppSelector} from "../../../hooks/hooks";
+import {TaskContainer} from "./Tasks/TaskContainer";
 
 type PropsType = {
     todolist: TodolistDomainType
@@ -51,6 +51,7 @@ export const Todolist = React.memo(({todolist}: PropsType) => {
         dispatch(fetchTasksTC(todolist.id))
     }, [dispatch, todolist.id])
 
+
     return <div>
         <h3><EditableSpan value={todolist.title} onChange={changeTodolistTitle}/>
             <IconButton onClick={removeTodolist}>
@@ -61,7 +62,7 @@ export const Todolist = React.memo(({todolist}: PropsType) => {
         <div>
             {
                 tasks && tasks.map(t => {
-                    return <Task key={t.id} task={t} todolistId={todolist.id}/>
+                    return <TaskContainer key={t.id} task={t} todolistId={todolist.id}/>
                 })
             }
         </div>
