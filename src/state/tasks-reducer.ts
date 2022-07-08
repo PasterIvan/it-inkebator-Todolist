@@ -1,6 +1,7 @@
 import {AddTodolistActionType, RemoveTodolistActionType} from "./todolists-reducer";
 import {tasksAPI, TasksStateType, TaskStatuses, TaskType} from "../api/todolistsAPI";
 import {AppRootStateType, AppThunkType} from "./store";
+import {setAppStatusAC} from "./app-reducer";
 
 const REMOVE_TASK = 'REMOVE_TASK'
 const CREATE_TASK = 'CREATE_TASK'
@@ -73,7 +74,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return state
     }
 }
-
+//AC
 export const removeTaskAC = (todolistId: string, id: string) => {
     return {type: REMOVE_TASK, todolistId, id} as const
 }
@@ -90,24 +91,33 @@ export const setTasksAC = (todolistId: string, tasks: Array<TaskType>) => {
     return {type: SET_TASKS, todolistId, tasks} as const
 }
 
+//THUNKS
 export const fetchTasksTC = (todolistId: string): AppThunkType => async dispatch => {
+    dispatch(setAppStatusAC('loading'))
     const res = await tasksAPI.getTasks(todolistId)
     dispatch(setTasksAC(todolistId, res.data.items))
+    dispatch(setAppStatusAC('succeeded'))
 }
 
 export const createTaskTC = (todolistId: string, title: string): AppThunkType => async dispatch => {
+    dispatch(setAppStatusAC('loading'))
     const res = await tasksAPI.createTask(todolistId, title)
     res.data.resultCode === 0 && dispatch(createTaskAC(todolistId, res.data.data.item))
+    dispatch(setAppStatusAC('succeeded'))
 }
 
 export const removeTasksTC = (id: string, todolistId: string): AppThunkType => async dispatch => {
+    dispatch(setAppStatusAC('loading'))
     const res = await tasksAPI.deleteTask(todolistId, id)
     res.data.resultCode === 0 && dispatch(removeTaskAC(todolistId, id))
+    dispatch(setAppStatusAC('succeeded'))
 }
 
 export const updateTaskStatusTC = (todolistId: string, id: string, status: TaskStatuses): AppThunkType => {
     return (dispatch,
             getState: () => AppRootStateType) => {
+
+        dispatch(setAppStatusAC('loading'))
 
         const allTasksFromState = getState().tasks;
         const tasksForCurrentTodolist = allTasksFromState[todolistId]
@@ -126,6 +136,7 @@ export const updateTaskStatusTC = (todolistId: string, id: string, status: TaskS
             }).then(() => {
                 const action = changeTaskStatusAC(todolistId, id, status)
                 dispatch(action)
+                dispatch(setAppStatusAC('succeeded'))
             })
         }
     }
@@ -133,6 +144,8 @@ export const updateTaskStatusTC = (todolistId: string, id: string, status: TaskS
 export const updateTaskTitleTC = (todolistId: string, id: string, title: string): AppThunkType => {
     return (dispatch,
             getState: () => AppRootStateType) => {
+
+        dispatch(setAppStatusAC('loading'))
 
         const allTasksFromState = getState().tasks;
         const tasksForCurrentTodolist = allTasksFromState[todolistId]
@@ -151,6 +164,7 @@ export const updateTaskTitleTC = (todolistId: string, id: string, title: string)
             }).then(() => {
                 const action = changeTaskTitleAC(todolistId, id, title)
                 dispatch(action)
+                dispatch(setAppStatusAC('succeeded'))
             })
         }
     }
