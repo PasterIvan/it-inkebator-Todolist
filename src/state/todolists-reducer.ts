@@ -1,6 +1,7 @@
 import {todolistsAPI, TodolistType} from "../api/todolistsAPI";
 import {AppThunkType} from "./store";
 import {setAppStatusAC} from "./app-reducer";
+import {handleServerAppError} from "../utils/error-utils";
 
 const REMOVE_TODOLIST = 'REMOVE-TODOLIST'
 const ADD_TODOLIST = 'ADD-TODOLIST'
@@ -90,19 +91,32 @@ export const fetchTodolistsTC = (): AppThunkType => async dispatch => {
 export const addTodoListTC = (title: string): AppThunkType => async dispatch => {
     dispatch(setAppStatusAC('loading'))
     const res = await todolistsAPI.createTodolist(title)
-    dispatch(addTodolistAC(res.data.data.item))
+    if (res.data.resultCode === 0){
+        dispatch(addTodolistAC(res.data.data.item))
+    } else {
+        handleServerAppError(res.data, dispatch)
+    }
     dispatch(setAppStatusAC('succeeded'))
 }
+
 export const removeTodolistTC = (todolistId: string): AppThunkType => async dispatch => {
     dispatch(setAppStatusAC('loading'))
     const res = await todolistsAPI.deleteTodolist(todolistId)
-    res.data.resultCode === 0 &&
-    dispatch(removeTodolistAC(todolistId))
+    if (res.data.resultCode === 0) {
+        dispatch(removeTodolistAC(todolistId))
+    } else {
+        handleServerAppError(res.data, dispatch)
+    }
     dispatch(setAppStatusAC('succeeded'))
 }
+
 export const changeTodolistTitleTC = (todolistId: string, title: string): AppThunkType => async dispatch => {
     dispatch(setAppStatusAC('loading'))
-    await todolistsAPI.updateTodolistTitle(todolistId, title)
-    dispatch(changeTodolistTitleAC(todolistId, title))
+    const res = await todolistsAPI.updateTodolistTitle(todolistId, title)
+    if (res.data.resultCode === 0) {
+        dispatch(changeTodolistTitleAC(todolistId, title))
+    } else {
+        handleServerAppError(res.data, dispatch)
+    }
     dispatch(setAppStatusAC('succeeded'))
 }
