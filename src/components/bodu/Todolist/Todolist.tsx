@@ -6,6 +6,7 @@ import {Delete} from '@material-ui/icons';
 import {FilterValuesType} from "../../../state/todolists-reducer";
 import {TaskType} from "../../../api/todolistsAPI";
 import {TaskContainer} from "./Tasks/TaskContainer";
+import {RequestStatusType} from "../../../state/app-reducer";
 
 type PropsType = {
     title: string
@@ -16,12 +17,14 @@ type PropsType = {
     changeTodolistTitle: (newTitle: string) => void
     changeTodolistFilter: (newFilter: FilterValuesType) => void
     addTask: (title: string) => void
+    entityStatus: RequestStatusType
 }
 
 export const Todolist: React.FC<PropsType> = React.memo(({
                                                              title,
                                                              filter,
                                                              todolistId,
+                                                             entityStatus,
                                                              tasks,
                                                              changeTodolistTitle,
                                                              removeTodolist,
@@ -31,7 +34,7 @@ export const Todolist: React.FC<PropsType> = React.memo(({
 
     return <div>
         <h3><EditableSpan value={title} onChange={changeTodolistTitle}/>
-            <IconButton onClick={removeTodolist}>
+            <IconButton onClick={removeTodolist} disabled={entityStatus === 'loading'}>
                 <Delete/>
             </IconButton>
         </h3>

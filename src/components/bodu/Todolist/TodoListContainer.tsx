@@ -49,6 +49,7 @@ export const TodoListContainer: React.FC<TodoListsPropsType> = ({todolist}) => {
             title={todolist.title}
             filter={todolist.filter}
             todolistId={todolist.id}
+            entityStatus={todolist.entityStatus}
             tasks={filteredTasks}
             removeTodolist={removeTodolist}
             changeTodolistTitle={changeTodolistTitle}
