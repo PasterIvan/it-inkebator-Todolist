@@ -2,7 +2,7 @@ import {authAPI, LoginParamsType} from '../api/todolistsAPI';
 import {handleServerAppError, handleServerNetworkError} from '../utils/error-utils';
 import {SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from "./app-reducer";
 import {AxiosError} from "axios";
-import {AppThunkType} from "./store";
+import {ActionsType, AppDispatch, AppThunkType} from "./store";
 
 const initialState = {
     isLoggedIn: false
@@ -22,7 +22,7 @@ export const setIsLoggedInAC = (value: boolean) =>
     ({type: 'login/SET-IS-LOGGED-IN', value} as const)
 
 // thunks
-export const loginTC = (data: LoginParamsType): AppThunkType => async dispatch => {
+export const loginTC = (data: LoginParamsType): AppThunkType => async (dispatch) => {
     try {
         dispatch(setAppStatusAC('loading'))
         const res = await authAPI.login(data)
