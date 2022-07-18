@@ -1,11 +1,18 @@
 import {AppBar, Button, IconButton, LinearProgress, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import React from "react";
-import {useAppSelector} from "../../hooks/hooks";
+import {useAppDispatch, useAppSelector} from "../../hooks/hooks";
+import {logoutTC} from "../../state/auth-reducer";
 
 export const Header = () => {
 
+    const dispatch = useAppDispatch()
     const status = useAppSelector((state) => state.app.status)
+    const isLoggedIn = useAppSelector((state)=> state.auth.isLoggedIn)
+
+    const logOutHandket = ()=>{
+        dispatch(logoutTC())
+    }
 
     return(
         <AppBar position="static">
@@ -16,7 +23,7 @@ export const Header = () => {
                 <Typography variant="h6">
                     News
                 </Typography>
-                <Button color="inherit">Login</Button>
+                {isLoggedIn && <Button onClick={logOutHandket} color="inherit">Log out</Button>}
             </Toolbar>
             {status === 'loading' && <LinearProgress/>}
         </AppBar>
